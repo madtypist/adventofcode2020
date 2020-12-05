@@ -43,30 +43,35 @@ def validatePassport(passport):
 		result = result and (2020 <= int(fields['eyr']) <= 2030)
 
 		# check height
+		
 		if ("cm" in fields['hgt']):
-			result = result and (150 <= int(fields['hgt'].strip('cm')) <= 193)
-			print fields['hgt']
+			checkheight = (150 <= int(fields['hgt'].strip('cm')) <= 193)
+			result = result and checkheight
 		else:
-			result = result and (59 <= int(fields['hgt'].strip('in')) <= 76)
-			print fields['hgt']
+			checkheight = (59 <= int(fields['hgt'].strip('in')) <= 76)
+			result = result and checkheight
+		
+		if not checkheight:
+			print "Height not valid %s" % (fields['hgt'])
 
 		# check hair color - a # followed by exactly six characters 0-9 or a-f
 		exp = "#[a-fA-F0-9]{6}"
 		if not re.match(exp,fields['hcl']):
-			print "Color is invalid: %s" % (fields['hcl'])
+			print "Hair color is invalid: %s" % (fields['hcl'])
 			result = False
-		else:
-			print "Color %s is valid: " % (fields['hcl'])
+		# else:
+		# 	print "Color %s is valid: " % (fields['hcl'])
 
 		# check eye color
 		result = result and fields['ecl'] in ['amb','blu','brn','gry','grn','hzl','oth']
 
 		# REMOVE
 		tmp = fields['ecl'] in ['amb','blu','brn','gry','grn','hzl','oth']
-		print "Eye color = %s %r" % (fields['ecl'],tmp)
+		if not tmp:
+			print "Eye color = %s %r" % (fields['ecl'],tmp)
 
 		# check passport id
-		exp = "\d{9}"
+		exp = "\d{9}$"
 		if not re.match(exp,fields['pid']):
 			result = False
 			print "PID is invalid: %s" % (fields['pid'])
