@@ -3,11 +3,20 @@ def processAnswers(answers):
 
 	for answer in answers:
 		for char in answer:
-			result[char] = 1
+			if char in result.keys():
+				result[char] += 1
+			else:
+				result[char] = 1
 	
-	print len(result)
+	#print len(result)
 
-	return len(result)
+	count = 0
+	groupsize = len(answers)
+	for key in result.keys():
+		if result[key] == groupsize:
+			count += 1
+
+	return count
 
 def main():
 	rd = open("input-day6.txt")
